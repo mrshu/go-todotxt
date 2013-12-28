@@ -2,7 +2,6 @@ package todotxt
 
 import (
         "time"
-        "fmt"
         "os"
         "bufio"
         "strings"
@@ -51,6 +50,17 @@ func BuildTaskList (filename string) (TaskList) {
                         task.todo = text
                 }
 
+                context_regexp, _ := regexp.Compile("@[[:word:]]+")
+                contexts := context_regexp.FindAllStringSubmatch(text, -1)
+                if len(contexts) != 0 {
+                        task.contexts = contexts[0]
+                }
+
+                project_regexp, _ := regexp.Compile("\\+[[:word:]]+")
+                projects := project_regexp.FindAllStringSubmatch(text, -1)
+                if len(projects) != 0 {
+                        task.projects = projects[0]
+                }
 
                 tasklist = append(tasklist, task)
         }
