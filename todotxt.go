@@ -2,6 +2,7 @@ package todotxt
 
 import (
         "time"
+        "fmt"
         "os"
         "bufio"
         "strings"
@@ -36,11 +37,18 @@ func BuildTaskList (filename string) (TaskList) {
                 var task = Task{}
                 text := scanner.Text()
                 splits := strings.Split(text, " ")
+                date_regexp := "([\\d]{4})-([\\d]{2})-([\\d]{2})"
 
-                match, _ := regexp.MatchString("[\\d]{4}-[\\d]{2}-[\\d]{2}", splits[0])
-                if match {
-                        task.create_date, _ = time.Parse(splits[0], "2013-12-30")
+                if match, _ := regexp.MatchString(date_regexp, splits[0]); match {
+                        t := fmt.Sprintf("%sT00:00:00Z", splits[0])
+                        if date, e := time.Parse(time.RFC3339, t); e != nil {
+                                panic(e)
+                        } else {
+                                task.create_date = date
+                        }
                 }
+
+                fmt.Println(task.create_date)
 
                 tasklist = append(tasklist, task)
         }
