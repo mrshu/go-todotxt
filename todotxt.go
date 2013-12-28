@@ -11,3 +11,6 @@ type Task struct {
         contexts []string
         projects []string
 }
+
+type TaskList []Task
+
