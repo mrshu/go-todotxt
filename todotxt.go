@@ -40,8 +40,7 @@ func BuildTaskList (filename string) (TaskList) {
                 date_regexp := "([\\d]{4})-([\\d]{2})-([\\d]{2})"
 
                 if match, _ := regexp.MatchString(date_regexp, splits[0]); match {
-                        t := fmt.Sprintf("%sT00:00:00Z", splits[0])
-                        if date, e := time.Parse(time.RFC3339, t); e != nil {
+                        if date, e := time.Parse("2006-01-02", splits[0]); e != nil {
                                 panic(e)
                         } else {
                                 task.create_date = date
