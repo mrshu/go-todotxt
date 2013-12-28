@@ -18,7 +18,7 @@ type Task struct {
 
 type TaskList []Task
 
-func BuildTaskList (filename string) (TaskList) {
+func LoadTaskList (filename string) (TaskList) {
 
         var f, err = os.Open(filename)
 
