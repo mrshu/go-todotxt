@@ -45,9 +45,12 @@ func BuildTaskList (filename string) (TaskList) {
                         } else {
                                 task.create_date = date
                         }
+
+                        task.todo = strings.Join(splits[1:], " ")
+                } else {
+                        task.todo = text
                 }
 
-                fmt.Println(task.create_date)
 
                 tasklist = append(tasklist, task)
         }
