@@ -72,3 +72,8 @@ func LoadTaskList (filename string) (TaskList) {
         return tasklist
 }
 
+
+func (tasks TaskList) Count() int {
+        return len(tasks)
+}
+
