@@ -77,3 +77,6 @@ func (tasks TaskList) Count() int {
         return len(tasks)
 }
 
+func (task Task) Text() string {
+        return task.todo
+}
