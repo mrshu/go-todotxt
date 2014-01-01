@@ -80,3 +80,19 @@ func (tasks TaskList) Count() int {
 func (task Task) Text() string {
         return task.todo
 }
+
+func (task Task) Priority() string {
+        return task.priority
+}
+
+func (task Task) Contexts() []string {
+        return task.contexts
+}
+
+func (task Task) Projects() []string {
+        return task.projects
+}
+
+func (task Task) CreateDate() time.Time {
+        return task.create_date
+}
