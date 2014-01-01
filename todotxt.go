@@ -10,6 +10,7 @@ import (
 
 type Task struct {
         todo string
+        dirty_todo string
         priority byte
         create_date time.Time
         contexts []string
@@ -35,6 +36,8 @@ func LoadTaskList (filename string) (TaskList) {
         for scanner.Scan() {
                 var task = Task{}
                 text := scanner.Text()
+                task.dirty_todo = text
+
                 splits := strings.Split(text, " ")
 
                 head := splits[0]
