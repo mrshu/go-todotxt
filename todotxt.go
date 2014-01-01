@@ -10,7 +10,7 @@ import (
 
 type Task struct {
         todo string
-        priority string
+        priority byte
         create_date time.Time
         contexts []string
         projects []string
@@ -36,8 +36,17 @@ func LoadTaskList (filename string) (TaskList) {
                 var task = Task{}
                 text := scanner.Text()
                 splits := strings.Split(text, " ")
-                date_regexp := "([\\d]{4})-([\\d]{2})-([\\d]{2})"
 
+                head := splits[0]
+
+                if (len(head) == 3) &&
+                   (head[0] == '(') &&
+                   (head[2] == ')') {
+                        task.priority = head[1]
+                        splits = splits[1:]
+                }
+
+                date_regexp := "([\\d]{4})-([\\d]{2})-([\\d]{2})"
                 if match, _ := regexp.MatchString(date_regexp, splits[0]); match {
                         if date, e := time.Parse("2006-01-02", splits[0]); e != nil {
                                 panic(e)
@@ -47,7 +56,7 @@ func LoadTaskList (filename string) (TaskList) {
 
                         task.todo = strings.Join(splits[1:], " ")
                 } else {
-                        task.todo = text
+                        task.todo = strings.Join(splits[0:], " ")
                 }
 
                 context_regexp, _ := regexp.Compile("@[[:word:]]+")
@@ -81,7 +90,7 @@ func (task Task) Text() string {
         return task.todo
 }
 
-func (task Task) Priority() string {
+func (task Task) Priority() byte {
         return task.priority
 }
 
