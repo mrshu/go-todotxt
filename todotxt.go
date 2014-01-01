@@ -10,11 +10,11 @@ import (
 
 type Task struct {
         todo string
-        raw_todo string
         priority byte
         create_date time.Time
         contexts []string
         projects []string
+        raw_todo string
 }
 
 type TaskList []Task
