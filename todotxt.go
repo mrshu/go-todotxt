@@ -1,7 +1,6 @@
 package todotxt
 
 import (
-        "fmt"
         "time"
         "os"
         "bufio"
@@ -46,7 +45,8 @@ func LoadTaskList (filename string) (TaskList) {
 
                 if (len(head) == 3) &&
                    (head[0] == '(') &&
-                   (head[2] == ')') {
+                   (head[2] == ')') &&
+                   (head[1] >= 65 && head[1] <= 90) { // checking if it's in range [A-Z]
                         task.priority = head[1]
                         splits = splits[1:]
                 }
@@ -101,7 +101,7 @@ func (tasks ByPriority) Swap(i, j int) {
 }
 
 func (tasks ByPriority) Less(i, j int) bool {
-        return tasks[i].Priority() > tasks[j].Priority()
+        return tasks[i].Priority() < tasks[j].Priority()
 }
 
 func (tasks TaskList) Sort() {
@@ -117,6 +117,7 @@ func (task Task) RawText() string {
 }
 
 func (task Task) Priority() byte {
+        // if priority is not from [A-Z], let it be 94 (^)
         if task.priority < 65 || task.priority > 90 {
                 return 94 // you know, ^
         } else {
