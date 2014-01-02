@@ -90,7 +90,7 @@ func (tasks TaskList) Len() int {
 }
 
 func (tasks TaskList) Swap(i, j int) {
-        a[i], a[j] = a[j], a[i]
+        tasks[i], tasks[j] = tasks[j], tasks[i]
 }
 
 func (tasks TaskList) Less(i, j int) bool {
