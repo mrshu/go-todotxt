@@ -91,22 +91,33 @@ func (tasks TaskList) Len() int {
 }
 
 type ByPriority TaskList
-
 func (tasks ByPriority) Len() int {
         return len(tasks)
 }
-
 func (tasks ByPriority) Swap(i, j int) {
         tasks[i], tasks[j] = tasks[j], tasks[i]
 }
-
 func (tasks ByPriority) Less(i, j int) bool {
         return tasks[i].Priority() < tasks[j].Priority()
 }
-
 func (tasks TaskList) Sort() {
         sort.Sort(ByPriority(tasks))
 }
+
+type ByCreateDate TaskList
+func (tasks ByCreateDate) Len() int {
+        return len(tasks)
+}
+func (tasks ByCreateDate) Swap(i, j int) {
+        tasks[i], tasks[j] = tasks[j], tasks[i]
+}
+func (tasks ByCreateDate) Less(i, j int) bool {
+        return tasks[i].CreateDate() < tasks[j].CreateDate()
+}
+func (tasks TaskList) SortByCreateDate() {
+        sort.Sort(ByCreateDate(tasks))
+}
+
 
 func (task Task) Text() string {
         return task.todo
