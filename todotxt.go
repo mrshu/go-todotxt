@@ -85,9 +85,19 @@ func LoadTaskList (filename string) (TaskList) {
 }
 
 
-func (tasks TaskList) Count() int {
+func (tasks TaskList) Len() int {
         return len(tasks)
 }
+
+func (tasks TaskList) Swap(i, j int) {
+        a[i], a[j] = a[j], a[i]
+}
+
+func (tasks TaskList) Less(i, j int) bool {
+        return tasks[i].Priority() < tasks[j].Priority()
+}
+
+
 
 func (task Task) Text() string {
         return task.todo
