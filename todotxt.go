@@ -1,11 +1,13 @@
 package todotxt
 
 import (
+        "fmt"
         "time"
         "os"
         "bufio"
         "strings"
         "regexp"
+        "sort"
 )
 
 type Task struct {
@@ -84,20 +86,27 @@ func LoadTaskList (filename string) (TaskList) {
         return tasklist
 }
 
-
 func (tasks TaskList) Len() int {
         return len(tasks)
 }
 
-func (tasks TaskList) Swap(i, j int) {
+type ByPriority TaskList
+
+func (tasks ByPriority) Len() int {
+        return len(tasks)
+}
+
+func (tasks ByPriority) Swap(i, j int) {
         tasks[i], tasks[j] = tasks[j], tasks[i]
 }
 
-func (tasks TaskList) Less(i, j int) bool {
-        return tasks[i].Priority() < tasks[j].Priority()
+func (tasks ByPriority) Less(i, j int) bool {
+        return tasks[i].Priority() > tasks[j].Priority()
 }
 
-
+func (tasks TaskList) Sort() {
+        sort.Sort(ByPriority(tasks))
+}
 
 func (task Task) Text() string {
         return task.todo
@@ -108,7 +117,11 @@ func (task Task) RawText() string {
 }
 
 func (task Task) Priority() byte {
-        return task.priority
+        if task.priority < 65 || task.priority > 90 {
+                return 94 // you know, ^
+        } else {
+                return task.priority
+        }
 }
 
 func (task Task) Contexts() []string {
