@@ -183,7 +183,7 @@ func (tasks TaskList) Sort(by string) {
         case "date":
                 By(dateCmp).Sort(tasks)
         case "date-rev":
-                By(dateCmp).Sort(tasks)
+                By(dateRevCmp).Sort(tasks)
         case "len":
                 By(lenCmp).Sort(tasks)
         case "len-rev":
