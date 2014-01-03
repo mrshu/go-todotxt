@@ -112,7 +112,15 @@ func (tasks ByCreateDate) Swap(i, j int) {
         tasks[i], tasks[j] = tasks[j], tasks[i]
 }
 func (tasks ByCreateDate) Less(i, j int) bool {
-        return tasks[i].CreateDate() < tasks[j].CreateDate()
+        t1 := tasks[i].CreateDate().Unix()
+        t2 := tasks[j].CreateDate().Unix()
+
+        // if the dates equal, let's use priority
+        if t1 == t2 {
+                return tasks[i].Priority() < tasks[j].Priority()
+        } else {
+                return t1 > t2
+        }
 }
 func (tasks TaskList) SortByCreateDate() {
         sort.Sort(ByCreateDate(tasks))
