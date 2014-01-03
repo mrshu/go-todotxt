@@ -125,6 +125,10 @@ func prioCmp(t1, t2 Task) bool {
         return t1.Priority() < t2.Priority()
 }
 
+func prioRevCmp(t1, t2 Task) bool {
+        return t1.Priority() > t2.Priority()
+}
+
 func dateCmp(t1, t2 Task) bool {
         tm1 := t1.CreateDate().Unix()
         tm2 := t2.CreateDate().Unix()
@@ -134,6 +138,18 @@ func dateCmp(t1, t2 Task) bool {
                 return prioCmp(t1, t2)
         } else {
                 return tm1 > tm2
+        }
+}
+
+func dateRevCmp(t1, t2 Task) bool {
+        tm1 := t1.CreateDate().Unix()
+        tm2 := t2.CreateDate().Unix()
+
+        // if the dates equal, let's use priority
+        if tm1 == tm2 {
+                return prioCmp(t1, t2)
+        } else {
+                return tm1 < tm2
         }
 }
 
@@ -147,14 +163,31 @@ func lenCmp(t1, t2 Task) bool {
         }
 }
 
+func lenRevCmp(t1, t2 Task) bool {
+        tl1 := len(t1.raw_todo)
+        tl2 := len(t2.raw_todo)
+        if tl1 == tl2 {
+                return prioCmp(t1, t2)
+        } else {
+                return tl1 > tl2
+        }
+}
+
 func (tasks TaskList) Sort(by string) {
         switch by {
+        default:
         case "prio":
                 By(prioCmp).Sort(tasks)
+        case "prio-rev":
+                By(prioRevCmp).Sort(tasks)
         case "date":
+                By(dateCmp).Sort(tasks)
+        case "date-rev":
                 By(dateCmp).Sort(tasks)
         case "len":
                 By(lenCmp).Sort(tasks)
+        case "len-rev":
+                By(lenRevCmp).Sort(tasks)
         }
 }
 
