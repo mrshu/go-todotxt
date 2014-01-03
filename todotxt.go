@@ -126,6 +126,25 @@ func (tasks TaskList) SortByCreateDate() {
         sort.Sort(ByCreateDate(tasks))
 }
 
+type ByLength TaskList
+func (tasks ByLength) Len() int {
+        return len(tasks)
+}
+func (tasks ByLength) Swap(i, j int) {
+        tasks[i], tasks[j] = tasks[j], tasks[i]
+}
+func (tasks ByLength) Less(i, j int) bool {
+        t1 := len(tasks[i].raw_todo)
+        t2 := len(tasks[j].raw_todo)
+        if t1 == t2 {
+                return tasks[i].Priority() < tasks[j].Priority()
+        } else {
+                return t1 > t2
+        }
+}
+func (tasks TaskList) SortByLength() {
+        sort.Sort(ByLength(tasks))
+}
 
 func (task Task) Text() string {
         return task.todo
