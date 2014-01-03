@@ -10,6 +10,7 @@ import (
 )
 
 type Task struct {
+        id int
         todo string
         priority byte
         create_date time.Time
@@ -33,10 +34,12 @@ func LoadTaskList (filename string) (TaskList) {
         var tasklist = TaskList{}
 
         scanner := bufio.NewScanner(f)
+        id := 0
 
         for scanner.Scan() {
                 var task = Task{}
                 text := scanner.Text()
+                task.id = id
                 task.raw_todo = text
 
                 splits := strings.Split(text, " ")
@@ -77,6 +80,7 @@ func LoadTaskList (filename string) (TaskList) {
                 }
 
                 tasklist = append(tasklist, task)
+                id += 1
         }
 
         if err := scanner.Err(); err != nil {
@@ -139,7 +143,7 @@ func (tasks ByLength) Less(i, j int) bool {
         if t1 == t2 {
                 return tasks[i].Priority() < tasks[j].Priority()
         } else {
-                return t1 > t2
+                return t1 < t2
         }
 }
 func (tasks TaskList) SortByLength() {
