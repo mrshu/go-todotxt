@@ -90,7 +90,7 @@ func LoadTaskList (filename string) (TaskList) {
         return tasklist
 }
 
-type By func(t1, t2 *Task) bool
+type By func(t1, t2 Task) bool
 
 func (by By) Sort(tasks TaskList) {
         ts := &taskSorter{
@@ -102,11 +102,11 @@ func (by By) Sort(tasks TaskList) {
 
 type taskSorter struct {
         tasks TaskList
-        by func(t1, t2 *Task) bool
+        by func(t1, t2 Task) bool
 }
 
 func (s *taskSorter) Len() int {
-        return len(s.tasklist)
+        return len(s.tasks)
 }
 
 func (s *taskSorter) Swap(i, j int) {
@@ -114,7 +114,7 @@ func (s *taskSorter) Swap(i, j int) {
 }
 
 func (s *taskSorter) Less(i, j int) bool {
-        return s.by(&s.tasks[i], &s.tasks[j])
+        return s.by(s.tasks[i], s.tasks[j])
 }
 
 func (tasks TaskList) Len() int {
@@ -148,16 +148,14 @@ func lenCmp(t1, t2 Task) bool {
 }
 
 func (tasks TaskList) Sortr(by string) {
-        switch by{
+        switch by {
         case "prio":
-                fn := prioCmp
+                By(prioCmp).Sort(tasks)
         case "date":
-                fn := dateCmp
+                By(dateCmp).Sort(tasks)
         case "len":
-                fn := lenCmp
+                By(lenCmp).Sort(tasks)
         }
-
-        By(fn).Sort(tasks)
 }
 
 type ByPriority TaskList
