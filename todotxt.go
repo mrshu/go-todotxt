@@ -90,6 +90,33 @@ func LoadTaskList (filename string) (TaskList) {
         return tasklist
 }
 
+type By func(t1, t2 *Task) bool
+
+func (by By) Sort(tasks TaskList) {
+        ts := &taskSorter{
+                tasks: tasks,
+                by:    by,
+        }
+        sort.Sort(ts)
+}
+
+type taskSorter struct {
+        tasks TaskList
+        by func(t1, t2 *Task) bool
+}
+
+func (s *taskSorter) Len() int {
+        return len(s.tasklist)
+}
+
+func (s *taskSorter) Swap(i, j int) {
+        s.tasks[i], s.tasks[j] = s.tasks[j], s.tasks[i]
+}
+
+func (s *taskSorter) Less(i, j int) bool {
+        return s.by(&s.tasks[i], &s.tasks[j])
+}
+
 func (tasks TaskList) Len() int {
         return len(tasks)
 }
