@@ -150,6 +150,10 @@ func (tasks TaskList) SortByLength() {
         sort.Sort(ByLength(tasks))
 }
 
+func (task Task) Id() int {
+        return task.id
+}
+
 func (task Task) Text() string {
         return task.todo
 }
