@@ -197,6 +197,22 @@ func (tasks TaskList) Sort(by string) {
         }
 }
 
+func (tasks TaskList) Save(filename string) {
+        tasks.Sort("id")
+
+        f, err := os.Create(filename)
+        if err != nil {
+                panic(err)
+        }
+
+        defer f.Close()
+
+        for _, task := range tasks {
+                f.WriteString(task.RawText() + "\n")
+        }
+        f.Sync()
+}
+
 func (task Task) Id() int {
         return task.id
 }
