@@ -7,6 +7,7 @@ import (
         "strings"
         "regexp"
         "sort"
+        "unicode"
 )
 
 type Task struct {
@@ -17,6 +18,7 @@ type Task struct {
         contexts []string
         projects []string
         raw_todo string
+        finished bool
 }
 
 type TaskList []Task
@@ -43,6 +45,11 @@ func LoadTaskList (filename string) (TaskList) {
                 task.raw_todo = text
 
                 splits := strings.Split(text, " ")
+
+                if text[0] == 'x' && text[1] == ' ' && unicode.IsSpace(text[2]) {
+                        task.finished = true
+                        splits = splits[1:]
+                }
 
                 head := splits[0]
 
