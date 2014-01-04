@@ -254,3 +254,7 @@ func (task Task) Projects() []string {
 func (task Task) CreateDate() time.Time {
         return task.create_date
 }
+
+func (task Task) Finished() bool {
+        return task.finished
+}
