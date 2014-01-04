@@ -46,7 +46,9 @@ func LoadTaskList (filename string) (TaskList) {
 
                 splits := strings.Split(text, " ")
 
-                if text[0] == 'x' && text[1] == ' ' && unicode.IsSpace(rune(text[2])) {
+                if text[0] == 'x' &&
+                   text[1] == ' ' &&
+                   !unicode.IsSpace(rune(text[2])) {
                         task.finished = true
                         splits = splits[1:]
                 }
