@@ -173,6 +173,10 @@ func lenRevCmp(t1, t2 Task) bool {
         }
 }
 
+func idCmp(t1, t2 Task) bool {
+        return t1.Id() < t2.Id()
+}
+
 func (tasks TaskList) Sort(by string) {
         switch by {
         default:
@@ -188,6 +192,8 @@ func (tasks TaskList) Sort(by string) {
                 By(lenCmp).Sort(tasks)
         case "len-rev":
                 By(lenRevCmp).Sort(tasks)
+        case "id":
+                By(idCmp).Sort(tasks)
         }
 }
 
