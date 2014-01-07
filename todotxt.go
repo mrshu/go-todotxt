@@ -258,3 +258,18 @@ func (task Task) CreateDate() time.Time {
 func (task Task) Finished() bool {
         return task.finished
 }
+
+func (task Task) PrettyPrint(pretty string) string {
+        rp := regexp.MustCompile("(%[a-zA-Z])")
+        out := rp.ReplaceAllStringFunc(pretty, func(s string) string {
+                switch s{
+                case "%t":
+                        return task.Text()
+                case "%p":
+                        return string(task.Priority())
+                default:
+                        return s
+                }
+        })
+        return out
+}
