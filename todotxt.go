@@ -8,6 +8,7 @@ import (
         "regexp"
         "sort"
         "unicode"
+        "fmt"
 )
 
 type Task struct {
@@ -262,9 +263,10 @@ func (task Task) Finished() bool {
 func (task Task) PrettyPrint(pretty string) string {
         rp := regexp.MustCompile("(%[a-zA-Z])")
         out := rp.ReplaceAllStringFunc(pretty, func(s string) string {
+
                 switch s{
                 case "%i":
-                        return string(task.Id())
+                        return fmt.Sprintf("%d", task.Id())
                 case "%t":
                         return task.Text()
                 case "%T":
