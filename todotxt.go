@@ -263,8 +263,12 @@ func (task Task) PrettyPrint(pretty string) string {
         rp := regexp.MustCompile("(%[a-zA-Z])")
         out := rp.ReplaceAllStringFunc(pretty, func(s string) string {
                 switch s{
+                case "%i":
+                        return string(task.Id())
                 case "%t":
                         return task.Text()
+                case "%T":
+                        return task.RawText()
                 case "%p":
                         return string(task.Priority())
                 default:
