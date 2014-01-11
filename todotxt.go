@@ -20,6 +20,7 @@ type Task struct {
         projects []string
         raw_todo string
         finished bool
+        id_padding int
 }
 
 type TaskList []Task
@@ -260,13 +261,34 @@ func (task Task) Finished() bool {
         return task.finished
 }
 
+func (task *Task) SetIdPaddingBy(tasklist TaskList) {
+        l := tasklist.Len()
+
+        if l >= 10000 {
+                task.id_padding = 5
+        } else if l >= 1000 {
+                task.id_padding = 4
+        } else if l >= 100 {
+                task.id_padding = 3
+        } else if l >= 10 {
+                task.id_padding = 2
+        } else {
+                task.id_padding = 1
+        }
+}
+
+func (task Task) IdPadding() int {
+        return task.id_padding
+}
+
 func (task Task) PrettyPrint(pretty string) string {
         rp := regexp.MustCompile("(%[a-zA-Z])")
         out := rp.ReplaceAllStringFunc(pretty, func(s string) string {
 
                 switch s{
                 case "%i":
-                        return fmt.Sprintf("%d", task.Id())
+                        str := fmt.Sprintf("%%0%dd", task.IdPadding())
+                        return fmt.Sprintf(str, task.Id())
                 case "%t":
                         return task.Text()
                 case "%T":
