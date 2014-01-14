@@ -22,3 +22,10 @@ func TestLoadTaskListNonExistent (t *testing.T) {
 
         t.Errorf("Something is still wrong %v", tasklist)
 }
+
+func TestCreateTask (t *testing.T) {
+        task := CreateTask(1, "(A) +funny task with prioity and project")
+        if task.id != 1 {
+                t.Errorf("Taskid: is %v, want %v", task.id, 1)
+        }
+}
