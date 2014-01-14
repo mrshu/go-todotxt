@@ -25,6 +25,56 @@ type Task struct {
 
 type TaskList []Task
 
+func CreateTask(id int, text string) (Task) {
+        var task = Task{}
+        task.id = id
+        task.raw_todo = text
+
+        splits := strings.Split(text, " ")
+
+        if text[0] == 'x' &&
+           text[1] == ' ' &&
+           !unicode.IsSpace(rune(text[2])) {
+                task.finished = true
+                splits = splits[1:]
+        }
+
+        head := splits[0]
+
+        if (len(head) == 3) &&
+           (head[0] == '(') &&
+           (head[2] == ')') &&
+           (head[1] >= 65 && head[1] <= 90) { // checking if it's in range [A-Z]
+                task.priority = head[1]
+                splits = splits[1:]
+        }
+
+        date_regexp := "([\\d]{4})-([\\d]{2})-([\\d]{2})"
+        if match, _ := regexp.MatchString(date_regexp, splits[0]); match {
+                if date, e := time.Parse("2006-01-02", splits[0]); e != nil {
+                        panic(e)
+                } else {
+                        task.create_date = date
+                }
+
+                task.todo = strings.Join(splits[1:], " ")
+        } else {
+                task.todo = strings.Join(splits[0:], " ")
+        }
+
+        context_regexp, _ := regexp.Compile("@[[:word:]]+")
+        contexts := context_regexp.FindAllStringSubmatch(text, -1)
+        if len(contexts) != 0 {
+                task.contexts = contexts[0]
+        }
+
+        project_regexp, _ := regexp.Compile("\\+[[:word:]]+")
+        projects := project_regexp.FindAllStringSubmatch(text, -1)
+        if len(projects) != 0 {
+                task.projects = projects[0]
+        }
+}
+
 func LoadTaskList (filename string) (TaskList) {
 
         var f, err = os.Open(filename)
@@ -41,54 +91,8 @@ func LoadTaskList (filename string) (TaskList) {
         id := 0
 
         for scanner.Scan() {
-                var task = Task{}
                 text := scanner.Text()
-                task.id = id
-                task.raw_todo = text
-
-                splits := strings.Split(text, " ")
-
-                if text[0] == 'x' &&
-                   text[1] == ' ' &&
-                   !unicode.IsSpace(rune(text[2])) {
-                        task.finished = true
-                        splits = splits[1:]
-                }
-
-                head := splits[0]
-
-                if (len(head) == 3) &&
-                   (head[0] == '(') &&
-                   (head[2] == ')') &&
-                   (head[1] >= 65 && head[1] <= 90) { // checking if it's in range [A-Z]
-                        task.priority = head[1]
-                        splits = splits[1:]
-                }
-
-                date_regexp := "([\\d]{4})-([\\d]{2})-([\\d]{2})"
-                if match, _ := regexp.MatchString(date_regexp, splits[0]); match {
-                        if date, e := time.Parse("2006-01-02", splits[0]); e != nil {
-                                panic(e)
-                        } else {
-                                task.create_date = date
-                        }
-
-                        task.todo = strings.Join(splits[1:], " ")
-                } else {
-                        task.todo = strings.Join(splits[0:], " ")
-                }
-
-                context_regexp, _ := regexp.Compile("@[[:word:]]+")
-                contexts := context_regexp.FindAllStringSubmatch(text, -1)
-                if len(contexts) != 0 {
-                        task.contexts = contexts[0]
-                }
-
-                project_regexp, _ := regexp.Compile("\\+[[:word:]]+")
-                projects := project_regexp.FindAllStringSubmatch(text, -1)
-                if len(projects) != 0 {
-                        task.projects = projects[0]
-                }
+                task := CreateTask(id, text)
 
                 tasklist = append(tasklist, task)
                 id += 1
