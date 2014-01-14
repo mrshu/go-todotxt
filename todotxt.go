@@ -73,6 +73,8 @@ func CreateTask(id int, text string) (Task) {
         if len(projects) != 0 {
                 task.projects = projects[0]
         }
+
+        return task
 }
 
 func LoadTaskList (filename string) (TaskList) {
