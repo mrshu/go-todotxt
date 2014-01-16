@@ -230,6 +230,11 @@ func (tasks TaskList) Save(filename string) {
         f.Sync()
 }
 
+func (tasks *TaskList) Add(todo string) {
+        task := CreateTask(tasks.Len(), todo)
+        tasks = append(tasks, task)
+}
+
 func (task Task) Id() int {
         return task.id
 }
