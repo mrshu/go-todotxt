@@ -90,7 +90,6 @@ func LoadTaskList (filename string) (TaskList) {
         var tasklist = TaskList{}
 
         scanner := bufio.NewScanner(f)
-        id := 0
 
         for scanner.Scan() {
                 text := scanner.Text()
@@ -229,7 +228,7 @@ func (tasks TaskList) Save(filename string) {
 
 func (tasks *TaskList) Add(todo string) {
         task := CreateTask(tasks.Len(), todo)
-        tasks = append(tasks, task)
+        *tasks = append(*tasks, task)
 }
 
 func (task Task) Id() int {
