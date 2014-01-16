@@ -231,9 +231,9 @@ func (tasks *TaskList) Add(todo string) {
         *tasks = append(*tasks, task)
 }
 
-func (tasks TaskList) Done(id int) int {
+func (tasks TaskList) Done(id int) error {
         if id > tasks.Len() || id < 0 {
-                return -1
+                return fmt.Errorf("Error is: %v", id)
         }
 
         tasks[id].finished = true
