@@ -94,10 +94,7 @@ func LoadTaskList (filename string) (TaskList) {
 
         for scanner.Scan() {
                 text := scanner.Text()
-                task := CreateTask(id, text)
-
-                tasklist = append(tasklist, task)
-                id += 1
+                tasklist.Add(text)
         }
 
         if err := scanner.Err(); err != nil {
