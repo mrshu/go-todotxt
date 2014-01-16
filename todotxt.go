@@ -231,6 +231,16 @@ func (tasks *TaskList) Add(todo string) {
         *tasks = append(*tasks, task)
 }
 
+func (tasks TaskList) Done(id int) int {
+        if id > tasks.Len() || id < 0 {
+                return -1
+        }
+
+        tasks[id].finished = true
+
+        return nil
+}
+
 func (task Task) Id() int {
         return task.id
 }
