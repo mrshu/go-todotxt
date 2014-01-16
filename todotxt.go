@@ -221,6 +221,9 @@ func (tasks TaskList) Save(filename string) {
         defer f.Close()
 
         for _, task := range tasks {
+                if task.Finished() {
+                        f.WriteString("x ")
+                }
                 f.WriteString(task.RawText() + "\n")
         }
         f.Sync()
@@ -233,7 +236,7 @@ func (tasks *TaskList) Add(todo string) {
 
 func (tasks TaskList) Done(id int) error {
         if id > tasks.Len() || id < 0 {
-                return fmt.Errorf("Error is: %v", id)
+                return fmt.Errorf("Error: id is %v", id)
         }
 
         tasks[id].finished = true
