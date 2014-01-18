@@ -210,7 +210,7 @@ func (tasks TaskList) Sort(by string) {
         }
 }
 
-func (tasks TaskList) Save(filename string) {
+func (tasks TaskList) Save(filename string, finish_date bool) {
         tasks.Sort("id")
 
         f, err := os.Create(filename)
@@ -221,7 +221,7 @@ func (tasks TaskList) Save(filename string) {
         defer f.Close()
 
         for _, task := range tasks {
-                if task.Finished() {
+                if task.Finished() && finish_date {
                         f.WriteString("x ")
                 }
                 f.WriteString(task.RawText() + "\n")
