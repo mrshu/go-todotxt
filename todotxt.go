@@ -238,7 +238,7 @@ func (tasks TaskList) Done(id int, finish_date bool) error {
 
         tasks[id].finished = true
         if finish_date {
-                t := time.LocalTime()
+                t := time.Now()
                 tasks[id].raw_todo = "x " + t.Format("2006-01-02") + " " +
                                         tasks[id].raw_todo
         } else {
