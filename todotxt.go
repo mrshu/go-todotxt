@@ -210,7 +210,7 @@ func (tasks TaskList) Sort(by string) {
         }
 }
 
-func (tasks TaskList) Save(filename string, finish_date bool) {
+func (tasks TaskList) Save(filename string) {
         tasks.Sort("id")
 
         f, err := os.Create(filename)
@@ -221,9 +221,6 @@ func (tasks TaskList) Save(filename string, finish_date bool) {
         defer f.Close()
 
         for _, task := range tasks {
-                if task.Finished() && finish_date {
-                        f.WriteString("x ")
-                }
                 f.WriteString(task.RawText() + "\n")
         }
         f.Sync()
@@ -234,12 +231,19 @@ func (tasks *TaskList) Add(todo string) {
         *tasks = append(*tasks, task)
 }
 
-func (tasks TaskList) Done(id int) error {
+func (tasks TaskList) Done(id int, finish_date bool) error {
         if id > tasks.Len() || id < 0 {
                 return fmt.Errorf("Error: id is %v", id)
         }
 
         tasks[id].finished = true
+        if finish_date {
+                t := time.LocalTime()
+                tasks[id].raw_todo = "x " + t.Format("2006-01-02") + " " +
+                                        tasks[id].raw_todo
+        } else {
+                tasks[id].raw_todo = "x " + tasks[id].raw_todo
+        }
 
         return nil
 }
