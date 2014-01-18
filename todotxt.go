@@ -20,6 +20,7 @@ type Task struct {
         projects []string
         raw_todo string
         finished bool
+        finish_date time.Time
         id_padding int
 }
 
@@ -32,6 +33,7 @@ func CreateTask(id int, text string) (Task) {
 
         splits := strings.Split(text, " ")
 
+        // checking if the task is already finished
         if text[0] == 'x' &&
            text[1] == ' ' &&
            !unicode.IsSpace(rune(text[2])) {
@@ -39,8 +41,22 @@ func CreateTask(id int, text string) (Task) {
                 splits = splits[1:]
         }
 
+        date_regexp := "([\\d]{4})-([\\d]{2})-([\\d]{2})"
+
+        // checking for finish date
+        if match, _ := regexp.MatchString(date_regexp, splits[0]); match {
+                if date, e := time.Parse("2006-01-02", splits[0]); e != nil {
+                        panic(e)
+                } else {
+                        task.finish_date = date
+                }
+
+                splits = splits[1:]
+        }
+
         head := splits[0]
 
+        // checking for priority
         if (len(head) == 3) &&
            (head[0] == '(') &&
            (head[2] == ')') &&
@@ -49,7 +65,7 @@ func CreateTask(id int, text string) (Task) {
                 splits = splits[1:]
         }
 
-        date_regexp := "([\\d]{4})-([\\d]{2})-([\\d]{2})"
+        // checking for creation date and building the actual todo item
         if match, _ := regexp.MatchString(date_regexp, splits[0]); match {
                 if date, e := time.Parse("2006-01-02", splits[0]); e != nil {
                         panic(e)
@@ -283,6 +299,10 @@ func (task Task) CreateDate() time.Time {
 
 func (task Task) Finished() bool {
         return task.finished
+}
+
+func (task Task) FinishDate() bool {
+        return task.finish_date
 }
 
 func (task *Task) SetIdPaddingBy(tasklist TaskList) {
