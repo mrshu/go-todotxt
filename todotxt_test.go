@@ -1,13 +1,13 @@
 package todotxt
 
-import "testing"
+import (
+        "testing"
+        "github.com/stretchr/testify/assert"
+)
 
 func TestLoadTaskList (t *testing.T) {
         tasklist := LoadTaskList("todo.txt")
-        if tasklist.Len() != 8 {
-                t.Errorf("Something went wrong with LoadTaskList: is %v, want %v\n%v",
-                          tasklist.Len(), 8, tasklist)
-        }
+        assert.Equal(t, tasklist.Len(), 8, "Something went wrong with LoadTaskList")
 }
 
 func TestLoadTaskListNonExistent (t *testing.T) {
@@ -25,11 +25,14 @@ func TestLoadTaskListNonExistent (t *testing.T) {
 
 func TestCreateTask (t *testing.T) {
         task := CreateTask(1, "(A) +funny task with prioity and project")
-        if task.id != 1 {
-                t.Errorf("id: is %v, want %v", task.id, 1)
-        }
 
-        if task.prioity != 'A' {
-                t.Errorf("priority: is %v, want %v", task.priority, 1)
-        }
+        assert.Equal(t, task.id, 1, "id should be 1")
+        assert.Equal(t, rune(task.priority), rune('A'), "priority should be A")
+
+        projects := make([]string, 1)
+        projects[0] = "+funny"
+
+        assert.Equal(t, task.projects, projects, "there should be a project for sure")
+        assert.Equal(t, task.todo, "+funny task with prioity and project", "todo should equal")
+
 }
