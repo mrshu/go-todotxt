@@ -301,7 +301,7 @@ func (task Task) Finished() bool {
         return task.finished
 }
 
-func (task Task) FinishDate() bool {
+func (task Task) FinishDate() time.Time {
         return task.finish_date
 }
 
