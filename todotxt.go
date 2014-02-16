@@ -26,7 +26,7 @@ type Task struct {
 
 type TaskList []Task
 
-func CreateTask(text string, id int) (Task) {
+func ParseTask(text string, id int) (Task) {
         var task = Task{}
         task.id = id
         task.raw_todo = text
@@ -243,7 +243,7 @@ func (tasks TaskList) Save(filename string) {
 }
 
 func (tasks *TaskList) Add(todo string) {
-        task := CreateTask(todo, tasks.Len())
+        task := ParseTask(todo, tasks.Len())
         *tasks = append(*tasks, task)
 }
 
