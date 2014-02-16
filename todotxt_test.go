@@ -24,7 +24,7 @@ func TestLoadTaskListNonExistent (t *testing.T) {
 }
 
 func TestCreateTask (t *testing.T) {
-        task := CreateTask(1, "(A) +funny task with prioity and project")
+        task := CreateTask("(A) +funny task with prioity and project", 1)
 
         assert.Equal(t, task.id, 1, "id should be 1")
         assert.Equal(t, rune(task.priority), rune('A'), "priority should be A")
@@ -36,7 +36,7 @@ func TestCreateTask (t *testing.T) {
         assert.Equal(t, task.todo, "+funny task with prioity and project", "todo should equal")
 
 
-        finished_task := CreateTask(1, "x This is a finished task")
+        finished_task := CreateTask("x This is a finished task", 1)
 
         assert.Equal(t, finished_task.id, 1)
         assert.Equal(t, finished_task.todo, "This is a finished task")
