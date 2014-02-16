@@ -35,4 +35,9 @@ func TestCreateTask (t *testing.T) {
         assert.Equal(t, task.projects, projects, "there should be a project for sure")
         assert.Equal(t, task.todo, "+funny task with prioity and project", "todo should equal")
 
+
+        finished_task := CreateTask(1, "x This is a finished task")
+
+        assert.Equal(t, finished_task.id, 1)
+        assert.Equal(t, finished_task.todo, "This is a finished task")
 }
