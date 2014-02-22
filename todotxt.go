@@ -321,6 +321,13 @@ func (task *Task) SetIdPaddingBy(tasklist TaskList) {
         }
 }
 
+func (task *Task) RebuildRawTodo() {
+        if task.finished {
+                task.raw_todo = task.PrettyPrint("x (%p) %t")
+        } else {
+                task.raw_todo = task.PrettyPrint("(%p) %t")
+        }
+}
 func (task Task) IdPadding() int {
         return task.id_padding
 }
