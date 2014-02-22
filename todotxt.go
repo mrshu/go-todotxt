@@ -328,6 +328,15 @@ func (task *Task) RebuildRawTodo() {
                 task.raw_todo = task.PrettyPrint("(%p) %t")
         }
 }
+
+func (task *Task) SetPriority(prio byte) {
+        if task.priority < 65 || task.priority > 90 {
+                task.priority = '^'
+        else {
+                task.priority = prio
+        }
+}
+
 func (task Task) IdPadding() int {
         return task.id_padding
 }
