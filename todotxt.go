@@ -323,16 +323,16 @@ func (task *Task) SetIdPaddingBy(tasklist TaskList) {
 
 func (task *Task) RebuildRawTodo() {
         if task.finished {
-                task.raw_todo = task.PrettyPrint("x (%p) %t")
+                task.raw_todo = task.PrettyPrint("x %P%t")
         } else {
-                task.raw_todo = task.PrettyPrint("(%p) %t")
+                task.raw_todo = task.PrettyPrint("%P%t")
         }
 }
 
 func (task *Task) SetPriority(prio byte) {
         if task.priority < 65 || task.priority > 90 {
                 task.priority = '^'
-        else {
+        } else {
                 task.priority = prio
         }
 }
@@ -355,6 +355,12 @@ func (task Task) PrettyPrint(pretty string) string {
                         return task.RawText()
                 case "%p":
                         return string(task.Priority())
+                case "%P":
+                        if task.Priority() != '^' {
+                                return "(" + string(task.Priority()) + ") "
+                        } else {
+                                return ""
+                        }
                 default:
                         return s
                 }
