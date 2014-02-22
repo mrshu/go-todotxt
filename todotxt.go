@@ -337,6 +337,10 @@ func (task *Task) SetPriority(prio byte) {
         }
 }
 
+func (task *Task) SetTodo(todo string) {
+        task.todo = todo
+}
+
 func (task Task) IdPadding() int {
         return task.id_padding
 }
