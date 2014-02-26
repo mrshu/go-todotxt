@@ -206,6 +206,10 @@ func idCmp(t1, t2 Task) bool {
         return t1.Id() < t2.Id()
 }
 
+func randCmp(t1, t2 Taks) bool {
+        return rand.Intn(t1.Id()) > rand.Intn(t1.Id())
+}
+
 func (tasks TaskList) Sort(by string) {
         switch by {
         default:
@@ -223,6 +227,8 @@ func (tasks TaskList) Sort(by string) {
                 By(lenRevCmp).Sort(tasks)
         case "id":
                 By(idCmp).Sort(tasks)
+        case "rand":
+                By(randCmp).Sort(tasks)
         }
 }
 
