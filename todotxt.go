@@ -9,6 +9,7 @@ import (
         "sort"
         "unicode"
         "fmt"
+        "math/rand"
 )
 
 type Task struct {
@@ -206,7 +207,7 @@ func idCmp(t1, t2 Task) bool {
         return t1.Id() < t2.Id()
 }
 
-func randCmp(t1, t2 Taks) bool {
+func randCmp(t1, t2 Task) bool {
         return rand.Intn(t1.Id()) > rand.Intn(t1.Id())
 }
 
