@@ -208,7 +208,8 @@ func idCmp(t1, t2 Task) bool {
 }
 
 func randCmp(t1, t2 Task) bool {
-        return rand.Intn(t1.Id()) > rand.Intn(t1.Id())
+        rand.Seed(time.Now().UnixNano()%1e6/1e3)
+        return rand.Intn(len(t1.raw_todo)) > rand.Intn(len(t2.raw_todo))
 }
 
 func (tasks TaskList) Sort(by string) {
