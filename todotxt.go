@@ -400,6 +400,20 @@ func (task Task) PrettyPrint(pretty string) string {
                         } else {
                                 ret = ""
                         }
+                case "%d":
+                        ret = fmt.Sprintf("%d", task.CreateDate().Day())
+                case "%m":
+                        ret = fmt.Sprintf("%d", int(task.CreateDate().Month()))
+                case "%y":
+                        ret = fmt.Sprintf("%d", task.CreateDate().Year())
+
+                case "%D":
+                        ret = fmt.Sprintf("%d", task.FinishDate().Day())
+                case "%M":
+                        ret = fmt.Sprintf("%d", int(task.FinishDate().Month()))
+                case "%Y":
+                        ret = fmt.Sprintf("%d", task.FinishDate().Year())
+
                 default:
                         ret = s
                 }
