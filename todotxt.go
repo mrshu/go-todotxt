@@ -362,28 +362,38 @@ func pad(in string, length int) string {
 }
 
 func (task Task) PrettyPrint(pretty string) string {
-        rp := regexp.MustCompile("(%[a-zA-Z])")
+        rp := regexp.MustCompile("%(\\.\\d+|)([a-zA-Z])")
+        padding := 80
         out := rp.ReplaceAllStringFunc(pretty, func(s string) string {
+                if (s.Len() > 1 && s[0] == ".") {
+                        if padding, e = strconv.Atoi(s); e != nil {
+                                padding = 80
+                        }
+                        return ""
+                }
 
+                ret := s
                 switch s{
                 case "%i":
                         str := fmt.Sprintf("%%0%dd", task.IdPadding())
-                        return fmt.Sprintf(str, task.Id())
+                        ret = fmt.Sprintf(str, task.Id())
                 case "%t":
-                        return task.Text()
+                        ret = task.Text()
                 case "%T":
-                        return task.RawText()
+                        ret = task.RawText()
                 case "%p":
-                        return string(task.Priority())
+                        ret = string(task.Priority())
                 case "%P":
                         if task.Priority() != '^' {
-                                return "(" + string(task.Priority()) + ") "
+                                ret = "(" + string(task.Priority()) + ") "
                         } else {
-                                return ""
+                                ret = ""
                         }
                 default:
-                        return s
+                        ret = s
                 }
+
+                return pad(ret, padding)
         })
         return out
 }
