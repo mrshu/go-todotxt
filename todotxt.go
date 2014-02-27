@@ -366,16 +366,25 @@ func pad(in string, length int) string {
 }
 
 func (task Task) PrettyPrint(pretty string) string {
-        rp := regexp.MustCompile("%(\\.\\d+|)([a-zA-Z])")
+        rp := regexp.MustCompile("(%(\\.\\d+|)[a-zA-Z])")
         padding := -1
         out := rp.ReplaceAllStringFunc(pretty, func(s string) string {
-                if (len(s) > 1 && s[0] == '.') {
-                        fmt.Scanf(s, "%d", &padding)
+                if (len(s) < 2) {
                         return ""
                 }
 
+                var f string
+                if (s[0] == '%' && s[1] == '.') {
+                        if _, e := fmt.Sscanf(s[2:], "%d%s", &padding, &f); e != nil {
+                                panic(e);
+                        }
+                        f = "%" + f
+                } else {
+                        f = s
+                }
+
                 ret := s
-                switch s{
+                switch f {
                 case "%i":
                         str := fmt.Sprintf("%%0%dd", task.IdPadding())
                         ret = fmt.Sprintf(str, task.Id())
