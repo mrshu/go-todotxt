@@ -353,6 +353,14 @@ func (task Task) IdPadding() int {
         return task.id_padding
 }
 
+func pad(in string, length int) string {
+        if (length > in.Len()) {
+                return strings.Repeat(' ', length - in.Len()) + in
+        } else {
+                return in[:length]
+        }
+}
+
 func (task Task) PrettyPrint(pretty string) string {
         rp := regexp.MustCompile("(%[a-zA-Z])")
         out := rp.ReplaceAllStringFunc(pretty, func(s string) string {
