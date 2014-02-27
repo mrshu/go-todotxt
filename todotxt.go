@@ -354,8 +354,12 @@ func (task Task) IdPadding() int {
 }
 
 func pad(in string, length int) string {
-        if (length > in.Len()) {
-                return strings.Repeat(' ', length - in.Len()) + in
+        if (length == -1) {
+                return in
+        }
+
+        if (length > len(in)) {
+                return strings.Repeat(" ", length - len(in)) + in
         } else {
                 return in[:length]
         }
@@ -363,12 +367,10 @@ func pad(in string, length int) string {
 
 func (task Task) PrettyPrint(pretty string) string {
         rp := regexp.MustCompile("%(\\.\\d+|)([a-zA-Z])")
-        padding := 80
+        padding := -1
         out := rp.ReplaceAllStringFunc(pretty, func(s string) string {
-                if (s.Len() > 1 && s[0] == ".") {
-                        if padding, e = strconv.Atoi(s); e != nil {
-                                padding = 80
-                        }
+                if (len(s) > 1 && s[0] == '.') {
+                        fmt.Scanf(s, "%d", &padding)
                         return ""
                 }
 
@@ -393,7 +395,9 @@ func (task Task) PrettyPrint(pretty string) string {
                         ret = s
                 }
 
-                return pad(ret, padding)
+                ret = pad(ret, padding)
+                padding = -1
+                return ret
         })
         return out
 }
