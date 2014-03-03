@@ -365,8 +365,21 @@ func pad(in string, length int) string {
         }
 }
 
+func soft_pad(in string, length int) string {
+        if (length == -1) {
+                return in
+        }
+
+        if (length > len(in)) {
+                return strings.Repeat(" ", length - len(in)) + in
+        } else {
+                slice := strings.Split(in, " ")
+                return soft_pad(strings.Join(slice[:len(slice)-1], " "), length)
+        }
+}
+
 func (task Task) PrettyPrint(pretty string) string {
-        rp := regexp.MustCompile("(%(\\.\\d+|)[a-zA-Z])")
+        rp := regexp.MustCompile("(%((\\.|\\*)\\d+|)[a-zA-Z])")
         padding := -1
         out := rp.ReplaceAllStringFunc(pretty, func(s string) string {
                 if (len(s) < 2) {
@@ -374,7 +387,7 @@ func (task Task) PrettyPrint(pretty string) string {
                 }
 
                 var f string
-                if (s[0] == '%' && s[1] == '.') {
+                if (s[0] == '%' && (s[1] == '.' || s[1] == '*')) {
                         if _, e := fmt.Sscanf(s[2:], "%d%s", &padding, &f); e != nil {
                                 panic(e);
                         }
@@ -418,7 +431,13 @@ func (task Task) PrettyPrint(pretty string) string {
                         ret = s
                 }
 
-                ret = pad(ret, padding)
+                switch s[1] {
+                case '.':
+                        ret = soft_pad(ret, padding)
+                case '*':
+                        ret = pad(ret, padding)
+                }
+
                 padding = -1
                 return ret
         })
