@@ -82,7 +82,9 @@ func ParseTask(text string, id int) (Task) {
         context_regexp, _ := regexp.Compile("@[[:word:]]+")
         contexts := context_regexp.FindAllStringSubmatch(text, -1)
         if len(contexts) != 0 {
-                task.contexts = contexts[0]
+                for _, context := range contexts {
+                        task.contexts = append(task.contexts, context[0])
+                }
         }
 
         project_regexp, _ := regexp.Compile("\\+[[:word:]]+")
