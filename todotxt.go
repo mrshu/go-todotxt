@@ -90,7 +90,10 @@ func ParseTask(text string, id int) (Task) {
         project_regexp, _ := regexp.Compile("\\+[[:word:]]+")
         projects := project_regexp.FindAllStringSubmatch(text, -1)
         if len(projects) != 0 {
-                task.projects = projects[0]
+                for _, project := range projects {
+                        task.projects = append(task.projects, project[0])
+                }
+ 
         }
 
         return task
