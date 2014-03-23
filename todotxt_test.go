@@ -41,4 +41,16 @@ func TestCreateTask (t *testing.T) {
         assert.Equal(t, finished_task.id, 1)
         assert.Equal(t, finished_task.todo, "This is a finished task")
         assert.Equal(t, finished_task.finished, true)
+
+        task_with_contexts := CreateTask("Some @task with @interesting contexts", 1)
+
+        assert.Equal(t, task_with_contexts.id, 1)
+        assert.Equal(t, task_with_contexts.finished, false)
+
+        contexts := make([]string, 2)
+        contexts[0] = "@task"
+        contexts[1] = "@interesting"
+
+        assert.Equal(t, task_with_contexts.contexts, contexts)
+
 }
