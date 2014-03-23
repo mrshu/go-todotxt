@@ -93,7 +93,6 @@ func ParseTask(text string, id int) (Task) {
                 for _, project := range projects {
                         task.projects = append(task.projects, project[0])
                 }
- 
         }
 
         return task
