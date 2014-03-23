@@ -23,8 +23,8 @@ func TestLoadTaskListNonExistent (t *testing.T) {
         t.Errorf("Something is still wrong %v", tasklist)
 }
 
-func TestCreateTask (t *testing.T) {
-        task := CreateTask("(A) +funny task with prioity and project", 1)
+func TestParseTask (t *testing.T) {
+        task := ParseTask("(A) +funny task with prioity and project", 1)
 
         assert.Equal(t, task.id, 1, "id should be 1")
         assert.Equal(t, rune(task.priority), rune('A'), "priority should be A")
@@ -36,13 +36,13 @@ func TestCreateTask (t *testing.T) {
         assert.Equal(t, task.todo, "+funny task with prioity and project", "todo should equal")
         assert.Equal(t, task.finished, false)
 
-        finished_task := CreateTask("x This is a finished task", 1)
+        finished_task := ParseTask("x This is a finished task", 1)
 
         assert.Equal(t, finished_task.id, 1)
         assert.Equal(t, finished_task.todo, "This is a finished task")
         assert.Equal(t, finished_task.finished, true)
 
-        task_with_contexts := CreateTask("Some @task with @interesting contexts", 1)
+        task_with_contexts := ParseTask("Some @task with @interesting contexts", 1)
 
         assert.Equal(t, task_with_contexts.id, 1)
         assert.Equal(t, task_with_contexts.finished, false)
