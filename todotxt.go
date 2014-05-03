@@ -444,6 +444,8 @@ func (task Task) PrettyPrint(pretty string) string {
                         ret = fmt.Sprintf("%d", task.FinishDate().Year())
                 case "%c":
                         ret = fmt.Sprintf("%s", task.ANSIColor())
+                case "%r":
+                        ret = fmt.Sprintf("\033[0m") // ANSI color reset
 
 
                 default:
