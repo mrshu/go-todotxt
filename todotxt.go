@@ -357,6 +357,18 @@ func (task Task) IdPadding() int {
         return task.id_padding
 }
 
+func (task Task) ANSIColor() string {
+        if task.Priority() == 65 { // A
+                return "\033[31m" //red
+        } else if task.Priority() == 66 { // B
+                return "\033[33m" //yellow
+        } else if task.Priority() == 67 { // C
+                return "\033[32m" //green
+        } else {
+                return "\033[m"
+        }
+}
+
 func pad(in string, length int) string {
         if (length == -1) {
                 return in
@@ -430,6 +442,9 @@ func (task Task) PrettyPrint(pretty string) string {
                         ret = fmt.Sprintf("%d", int(task.FinishDate().Month()))
                 case "%Y":
                         ret = fmt.Sprintf("%d", task.FinishDate().Year())
+                case "%c":
+                        ret = fmt.Sprintf("%s", task.ANSIColor())
+
 
                 default:
                         ret = s
