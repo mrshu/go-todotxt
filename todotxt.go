@@ -359,13 +359,15 @@ func (task Task) IdPadding() int {
 
 func (task Task) ANSIColor() string {
         if task.Priority() == 65 { // A
-                return "\033[31m" //red
+                return "\033[1;31m" //red
         } else if task.Priority() == 66 { // B
-                return "\033[33m" //yellow
+                return "\033[1;33m" //yellow
         } else if task.Priority() == 67 { // C
-                return "\033[32m" //green
+                return "\033[0;32m" //green
+        } else if task.Priority() == 68 { // C
+                return "\033[1;34m" //blue
         } else {
-                return "\033[m"
+                return "\033[0m"
         }
 }
 
