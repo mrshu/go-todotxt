@@ -342,7 +342,7 @@ func (task *Task) RebuildRawTodo() {
 }
 
 func (task *Task) SetPriority(prio byte) {
-        if task.priority < 65 || task.priority > 90 {
+        if prio < 65 || prio > 90 {
                 task.priority = '^'
         } else {
                 task.priority = prio
