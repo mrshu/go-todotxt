@@ -466,3 +466,8 @@ func (task Task) PrettyPrint(pretty string) string {
         })
         return out
 }
+
+func (task Task) Matches(text string) bool {
+        match, _ := regexp.MatchString(text, task.Text())
+        return match
+}
