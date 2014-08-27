@@ -54,3 +54,10 @@ func TestParseTask (t *testing.T) {
         assert.Equal(t, task_with_contexts.contexts, contexts)
 
 }
+
+
+func TestTaskMatches (t *testing.T) {
+        task := ParseTask("(A) +funny task with prioity and project", 1)
+
+        assert.Equal(t, task.Matches("funny"), true)
+}
